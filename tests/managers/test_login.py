@@ -62,3 +62,4 @@ class TestAdminLoginView:
         assert resp.status == 405
         data = await resp.json()
         assert data["status"] == "not_implemented"
+
