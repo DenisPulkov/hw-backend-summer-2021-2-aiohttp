@@ -9,7 +9,7 @@ if typing.TYPE_CHECKING:
 
 @dataclass
 class SessionConfig:
-    pass
+    key: str
 
 
 @dataclass
@@ -20,7 +20,8 @@ class AdminConfig:
 
 @dataclass
 class BotConfig:
-    pass
+    token: str
+    group_id: int
 
 
 @dataclass
@@ -36,8 +37,15 @@ def setup_config(app: "Application", config_path: str):
         raw_config = yaml.safe_load(f)
 
     app.config = Config(
+        session=SessionConfig(
+            key=raw_config["session"]["key"],
+        ),
         admin=AdminConfig(
             email=raw_config["admin"]["email"],
             password=raw_config["admin"]["password"],
+        ),
+        bot=BotConfig(
+            token=raw_config["bot"]["token"],
+            group_id=raw_config["bot"]["group_id"],
         ),
     )
