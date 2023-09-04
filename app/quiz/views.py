@@ -38,13 +38,18 @@ class QuestionAddView(AuthRequiredMixin, View):
     @response_schema(QuestionSchema, 200)
     async def post(self):
         title = self.data["title"]
+        theme_id = self.data["theme_id"]
+        answers = [Answer.from_dict(answer) for answer in self.data["answers"]]
+        question = await self.store.quizzes.create_question(title=title, theme_id=theme_id, answers=answers)
+        return json_response(data=QuestionSchema().dump(question))
+        '''title = self.data["title"]
         existing_title = await self.store.quizzes.get_question_by_title(title=title)
         if existing_title:
             raise HTTPConflict
         theme_id = self.data["theme_id"]
         theme = await self.store.quizzes.get_theme_by_id(id_=theme_id)
         if not theme:
-            raise HTTPConflict
+            raise HTTPNotFound
         answers = [Answer(title=answer["title"], is_correct=answer["is_correct"]) for answer in self.data["answers"]]
         correct_answer = [answer.is_correct for answer in answers]
         if sum(correct_answer) != 1:
@@ -57,35 +62,12 @@ class QuestionAddView(AuthRequiredMixin, View):
             answers=answers,
         )
         return json_response(data=QuestionSchema().dump(question))
-'''
-        question = await self.request.json()
-        if not await self.store.quizzes.get_question_by_title(question["title"]):
-            if await self.store.quizzes.get_theme_by_id(question["theme_id"]):
-                if len(question["answers"]) > 1:
-                    check: int = 0
-                    for ans in question["answers"]:
-                        if ans["is_correct"]:
-                            check += 1
-                    if check == 1:
-                        question = await self.store.quizzes.create_question(title=question["title"],
-                                                                            theme_id=question["theme_id"],
-                                                                            answers=question["answers"])
-                        return json_response(data=QuestionSchema().dump(question))
-                    else:
-                        raise HTTPBadRequest
-                else:
-                    raise HTTPBadRequest
-            else:
-                raise HTTPConflict
-        else:
-            raise HTTPConflict
-'''
+        '''
+
 
 class QuestionListView(AuthRequiredMixin, View):
     @querystring_schema(ThemeIdSchema)
     @response_schema(ListQuestionSchema)
     async def get(self):
-        list_theme_id = int(self.request.query["theme_id"])
-        list_questions = await self.store.quizzes.list_questions(list_theme_id)
-        raw_questions = [QuestionSchema().dump(obj=questions) for questions in list_questions]
-        return json_response(data={"questions": raw_questions})
+        questions = await self.store.quizzes.list_questions(theme_id=self.data.get("theme_id"))
+        return json_response(data=ListQuestionSchema().dump({"questions": questions}))

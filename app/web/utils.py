@@ -21,12 +21,13 @@ def error_json_response(
     message: Optional[str] = None,
     data: Optional[dict] = None,
 ):
+    from app.web.middlewares import HTTP_ERROR_CODES
     if data is None:
         data = {}
     return aiohttp_json_response(
         status=http_status,
         data={
-            "status": status,
+            "status": HTTP_ERROR_CODES[http_status],
             "message": str(message),
             "data": data,
         },
