@@ -18,3 +18,4 @@ class BotManager:
                     text="Привет!",
                 )
             )
+

@@ -49,3 +49,4 @@ def setup_config(app: "Application", config_path: str):
             group_id=raw_config["bot"]["group_id"],
         ),
     )
+

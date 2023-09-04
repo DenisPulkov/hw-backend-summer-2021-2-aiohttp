@@ -22,3 +22,5 @@ class Database:
     def clear(self):
         self.themes = []
         self.questions = []
+
+

@@ -21,4 +21,3 @@ class Store:
 def setup_store(app: "Application"):
     app.database = Database()
     app.store = Store(app)
-

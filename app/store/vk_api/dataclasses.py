@@ -25,3 +25,4 @@ class UpdateObject:
 class Update:
     type: str
     object: UpdateObject
+

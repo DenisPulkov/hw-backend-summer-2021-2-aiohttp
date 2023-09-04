@@ -24,3 +24,4 @@ class AdminAccessor(BaseAccessor):
         id_ = len(self.app.database.admins) + 1
         password = sha256(password.encode()).hexdigest()
         return Admin(id=id_, email=email, password=password)
+

@@ -32,3 +32,4 @@ def error_json_response(
             "data": data,
         },
     )
+

@@ -7,3 +7,4 @@ def setup_routes(app: Application):
 
     admin_setup_routes(app)
     quiz_setup_routes(app)
+

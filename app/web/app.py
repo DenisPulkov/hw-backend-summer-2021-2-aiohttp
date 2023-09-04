@@ -61,3 +61,4 @@ def setup_app(config_path: str) -> Application:
     setup_middlewares(app)
     setup_store(app)
     return app
+

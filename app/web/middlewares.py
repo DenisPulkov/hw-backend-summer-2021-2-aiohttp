@@ -65,3 +65,4 @@ def setup_middlewares(app: "Application"):
     app.middlewares.append(auth_middleware)
     app.middlewares.append(error_handling_middleware)
     app.middlewares.append(validation_middleware)
+

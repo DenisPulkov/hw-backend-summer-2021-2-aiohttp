@@ -7,3 +7,4 @@ if typing.TYPE_CHECKING:
 
 def setup_logging(_: "Application") -> None:
     logging.basicConfig(level=logging.INFO)
+
